@@ -12,7 +12,7 @@ export class EnvConfigModule extends ConfigModule {
       ...options,
       envFilePath:
       [
-        join( __dirname, `../../../../.env.${process.env.NODE_ENV}`),
+        join( __dirname, `../../../../test/.env.${process.env.NODE_ENV}`),
       ],
     })
   }
