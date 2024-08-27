@@ -70,19 +70,72 @@ describe('UserEntity integration tests', () => {
       }
       expect(() => new UserEntity(props)).toThrowError(EntityValidationError)
     })
-
     it('Should throw an error when creating a user with invalid createdAt', () => {
       let props: UserProps = {
         ...UserDataBuilder({}),
         createdAt: '2023' as any,
       }
       expect(() => new UserEntity(props)).toThrowError(EntityValidationError)
-
       props = {
         ...UserDataBuilder({}),
         createdAt: 10 as any,
       }
       expect(() => new UserEntity(props)).toThrowError(EntityValidationError)
+    })
+    it('Should a valid user', () => {
+      expect.assertions(0)
+      const props: UserProps = {
+        ...UserDataBuilder({}),
+      }
+      new UserEntity(props)
+    })
+  })
+  describe('Update method', () => {
+    it('Should throw an error when update a user with invalid name', () => {
+      const entity = new UserEntity(UserDataBuilder({}))
+      expect(() => entity.update(null)).toThrowError(EntityValidationError)
+      expect(() => entity.update('')).toThrowError(EntityValidationError)
+      expect(() => entity.update(10 as any)).toThrowError(EntityValidationError)
+      expect(() => entity.update('a'.repeat(256))).toThrowError(
+        EntityValidationError,
+      )
+    })
+    it('Should a valid user', () => {
+      expect.assertions(0)
+      const props: UserProps = {
+        ...UserDataBuilder({}),
+      }
+      const entity = new UserEntity(props)
+      entity.update('other name')
+    })
+  })
+
+  describe('UpdatePassword method', () => {
+    it('Should a invalid user using password field', () => {
+      const entity = new UserEntity(UserDataBuilder({}))
+      expect(() => entity.updatePassword(null)).toThrowError(
+        EntityValidationError,
+      )
+      expect(() => entity.updatePassword('')).toThrowError(
+        EntityValidationError,
+      )
+      expect(() => entity.updatePassword(10 as any)).toThrowError(
+        EntityValidationError,
+      )
+      expect(() => entity.updatePassword('a'.repeat(101))).toThrowError(
+        EntityValidationError,
+      )
+    })
+
+    it('Should a valid user', () => {
+      expect.assertions(0)
+
+      const props: UserProps = {
+        ...UserDataBuilder({}),
+      }
+
+      const entity = new UserEntity(props)
+      entity.updatePassword('other password')
     })
   })
 })
